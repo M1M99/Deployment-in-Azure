@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #students {
+            margin-top: 20px;
+        }
+
+        .student {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        h2 {
+            margin: 0;
+            color: #2a2a2a;
+        }
+    </style>
+</head>
+<body>
+    <h1>Student List</h1>
+    <div id="students">
+        <!-- Student data will be added here -->
+    </div>
+
+    <script>
+        fetch("https://schoolapp1-abeuffg3gvb7eccy.centralindia-01.azurewebsites.net/api/students")
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById("students");
+
+                data.forEach(student => {
+                    const studentDiv = document.createElement("div");
+                    studentDiv.className = "student";
+
+                    // Diyelim ki student.name, student.id gibi alanlar var
+                    studentDiv.innerHTML = `
+                        <h2>${student.name}</h2>
+                        <p>ID: ${student.id}</p>
+                        <p>Age: ${student.age}</p>
+                    `;
+
+                    container.appendChild(studentDiv);
+                });
+            })
+            .catch(error => {
+                console.error("API'den veri alınamadı:", error);
+            });
+    </script>
+</body>
+</html>
