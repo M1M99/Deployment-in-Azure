@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using WebApiAfternoon.Data;
 using WebApiAfternoon.Formatters;
@@ -9,10 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers(options =>
-{
-    //   options.OutputFormatters.Insert(0, new VCardOutputFormatter());
-});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -24,8 +22,14 @@ builder.Services.AddDbContext<StudentDbContext>(opt =>
 {
     opt.UseSqlServer(conn);
 });
+builder.Services.AddControllers(options =>
+{
+    options.OutputFormatters.Add(new XmlSerializerOutputFormatter());
+});
+
 
 var app = builder.Build();
+app.UseStaticFiles();
 // Configure the HTTP request pipeline.
 app.UseMiddleware<GlobalErrorHandlerMiddleware>();
 
